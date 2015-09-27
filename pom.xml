@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright mealbite 2015-16
+    All Rights Reserved.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- ======================================================== -->
+    <!-- Inheritance from mb base-pom                      -->
+    <!-- ======================================================== -->
+    <parent>
+        <groupId>mealbite.common</groupId>
+        <artifactId>maven-poms.java-pom</artifactId>
+        <version>1.0.60</version>
+        <relativePath />
+    </parent>
+
+    <!-- ======================================================== -->
+    <!-- Project Information                                      -->
+    <!-- ======================================================== -->
+    <groupId>mealbite</groupId>
+    <artifactId>mealbite</artifactId>
+    <packaging>pom</packaging>
+    <name>${project.artifactId}</name>
+    <version>1.1.0.30-SNAPSHOT</version>
+    <description>Lifecycle Management product pom</description>
+
+    <!-- ======================================================== -->
+    <!-- Project Properties                                       -->
+    <!-- ======================================================== -->
+    <properties>
+        <product.name>MealBite</product.name>
+        <!-- Required by the distribution module (dist) and site plugin -->
+        <project.scm.path>/mealbite</project.scm.path>
+        <!-- Required for release management. -->
+        <project.base.path>${project.basedir}</project.base.path>
+    </properties>
+
+    <!-- ======================================================== -->
+    <!-- SCM integration                                          -->
+    <!-- ======================================================== -->
+  
+
+    <!-- ======================================================== -->
+    <!-- Project Modules (Aggregation)                            -->
+    <!-- ======================================================== -->
+    <modules>
+        <module>mb-server</module>
+    </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>mealbite</groupId>
+            <artifactId>java-libraries.application</artifactId>
+        </dependency>
+    </dependencies>
+
+    <!-- ======================================================== -->
+    <!-- Project Profiles                                         -->
+    <!-- ======================================================== -->
+
+    <!-- ======================================================== -->
+    <!-- Build Configuration                                      -->
+    <!-- ======================================================== -->
+
+    <!-- ======================================================== -->
+    <!-- Repository Configuration                                 -->
+    <!-- ======================================================== -->
+   
+
+    <!-- ======================================================== -->
+    <!-- Organization                                             -->
+    <!-- ======================================================== -->
+    <organization>
+        <name>Meal Bite</name>
+        <url>http://www.mealbite.com</url>
+    </organization>
+
+    <!-- ======================================================== -->
+    <!-- Developers                                               -->
+    <!-- ======================================================== -->
+    <developers>
+        <developer>
+            <id>hnagdi</id>
+            <name>Hojefa Nagdi</name>
+            <email>hnagdi@gmail.com</email>
+            <organization>Meal Bite</organization>
+            <organizationUrl>http://www.mealbite.com</organizationUrl>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <timezone>-6</timezone>
+        </developer>
+        <developer>
+            <id>ahora</id>
+            <name>Amarpreet Singh Hora</name>
+            <email>a.singh.hora@gmail.com</email>
+            <organization>Meal Bite</organization>
+            <organizationUrl>http://www.mealbite.com</organizationUrl>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <timezone>-6</timezone>
+        </developer>
+    </developers>
+    <profiles>
+        <profile>
+            <id>khalo</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>dist</module>
+            </modules>
+        </profile>
+    </profiles>
+
+</project>

@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2015-2016 MealBite pvt ltd
+    All Rights Reserved.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- ================================================ -->
+    <!-- Parent Information -->
+    <!-- ================================================ -->
+    <parent>
+        <groupId>mealbite</groupId>
+        <artifactId>mealbite-server</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+   </parent>
+
+    <!-- ================================================ -->
+    <!-- Project Information -->
+    <!-- ================================================ -->
+    <artifactId>mealbite.webapp</artifactId>
+    <packaging>war</packaging>
+    <name>${project.artifactId}</name>
+    <description>Meal bite Web Application</description>
+
+    <!-- ================================================ -->
+    <!-- Project Properties -->
+    <!-- ================================================ -->
+    <properties>
+        <filter.properties>${basedir}/src/main/filters/filter.dev.properties</filter.properties>
+        <web.xml.path>${basedir}/src/main/webapp/WEB-INF/web.xml</web.xml.path>
+        <roles><![CDATA[
+		<value>ROLE_INSIGHT_USER</value>
+		<value>ROLE_INSIGHT_ADMINISTRATOR</value>
+		]]>
+        </roles>
+
+        <!-- code coverage. force to java since only contains java code -->
+        <sonar.language>java</sonar.language>
+        <sonar.sources>src/main/java</sonar.sources>
+    </properties>
+
+    <!-- ================================================ -->
+    <!-- Project Dependencies -->
+    <!-- ================================================ -->
+    <dependencies>
+        
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
+        <!-- testing dependencies -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${org.springframework.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <!-- ================================================ -->
+    <!-- Project Profiles -->
+    <!-- ================================================ -->
+    <profiles>
+            <id>web</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.tomcat.maven</groupId>
+                        <artifactId>tomcat7-maven-plugin</artifactId>
+                        <configuration>
+                            <port>9998</port>
+                            <path>/rest</path>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>start-tomcat</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>run-war-only</goal>
+                                </goals>
+                                <configuration>
+                                    <fork>true</fork>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>stop-tomcat</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>shutdown</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <!-- configuration inherited from parent -->
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <web.xml.path>${basedir}/src/main/webapp/WEB-INF/web.xml</web.xml.path>
+            </properties>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <filtering>true</filtering>
+                        <includes>
+                            <include>applicationContext.xml</include>
+                        </includes>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+        <profile>
+            <id>local</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <filter.properties>${basedir}/src/main/filters/filter.local.properties</filter.properties>
+            </properties>
+        </profile>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <filter.properties>${basedir}/src/main/filters/filter.dev.properties</filter.properties>
+            </properties>
+        </profile>
+        <profile>
+            <id>devds</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <filter.properties>${basedir}/src/main/filters/filter.ds.dev.properties</filter.properties>
+            </properties>
+        </profile>
+        <profile>
+            <id>demo</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <filter.properties>${basedir}/src/main/filters/filter.demo.properties</filter.properties>
+            </properties>
+        </profile>
+        <profile>
+            <id>rel</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <filter.properties>${basedir}/src/main/filters/filter.rel.properties</filter.properties>
+            </properties>
+        </profile>
+    </profiles>
+
+    <!-- ================================================ -->
+    <!-- Project Build -->
+    <!-- ================================================ -->
+    <build>
+        <filters>
+            <filter>${basedir}/src/main/filters/filter.properties</filter>
+        </filters>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*properties</include>
+                    <include>**/VERSION</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+                <excludes>
+                    <exclude>applicationContext.xml</exclude>
+                </excludes>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <!-- inherit version from parent pom -->
+                <configuration>
+                    <webResources>
+                        <resource>
+                            <directory>${basedir}/src/main/webapp</directory>
+                            <filtering>true</filtering>
+                        </resource>
+                    </webResources>
+                    <webXml>${web.xml.path}</webXml>
+                    <warSourceExcludes>WEB-INF/lib/*.jar</warSourceExcludes>
+                    <packagingExcludes>**/web.xml</packagingExcludes>
+                    <archiveClasses>false</archiveClasses>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix />
+                        </manifest>
+                        <manifestEntries>
+                            <Dependencies>
+                                com.sun.jersey.contribs.spring-jersey,com.sun.jersey.jersey-server,com.sun.jersey.jersey-client,com.sun.jersey.jersey-json,com.sun.jersey.jersey-core
+                            </Dependencies>
+                        </manifestEntries>
+                    </archive>
+                    <overlays>
+                        <overlay>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>mealbite</artifactId>
+                            <type>zip</type>
+                            <targetPath>/</targetPath>
+                        </overlay>
+                        <overlay>
+                        </overlay>
+                    </overlays>
+                </configuration>
+            </plugin>
+        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.tomcat.maven</groupId>
+                    <artifactId>tomcat7-maven-plugin</artifactId>
+                    <version>2.0</version>
+                    <configuration>
+                        <path>/</path>
+                        <port>9998</port>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>
