@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2015-16 MealBite Pvt Ltd
+    All Rights Reserved.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- This POM provides for the packaging (assembly) and distribution of
+        the product. -->
+
+    <!-- ======================================================== -->
+    <!-- Project Inheritance                                      -->
+    <!-- ======================================================== -->
+
+    <!-- ======================================================== -->
+    <!-- Project Information                                      -->
+    <!-- ======================================================== -->
+    <artifactId>mealbite-db</artifactId>
+    <packaging>jar</packaging>
+    <name>${project.artifactId}</name>
+    <description>MealBite Distribution Project</description>
+
+    <!-- ======================================================== -->
+    <!-- Project Dependencies                                     -->
+    <!-- ======================================================== -->
+
+    <profiles>
+        <profile>
+            <id>local</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <filter.properties>${basedir}/src/main/filters/filter.local.properties</filter.properties>
+            </properties>
+        </profile>
+        <profile>
+            <id>env.int</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <filter.properties>${basedir}/src/main/filters/filter.env.int.properties</filter.properties>
+            </properties>
+        </profile>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <filter.properties>${basedir}/src/main/filters/filter.dev.properties</filter.properties>
+            </properties>
+        </profile>
+        <profile>
+            <id>devds</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <filter.properties>${basedir}/src/main/filters/filter.ds.dev.properties</filter.properties>
+            </properties>
+        </profile>
+        <profile>
+            <id>demo</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <filter.properties>${basedir}/src/main/filters/filter.demo.properties</filter.properties>
+            </properties>
+        </profile>
+        <profile>
+            <id>rel</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <filter.properties>${basedir}/src/main/filters/filter.rel.properties</filter.properties>
+            </properties>
+        </profile>
+    </profiles>
+
+    <build>
+        <filters>
+            <filter>${filter.properties}</filter>
+        </filters>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                      <id>regex-property</id>
+                      <goals>
+                        <goal>regex-property</goal>
+                      </goals>
+                      <configuration>
+                        <name>release.version</name>
+                        <value>${project.version}</value>
+                        <regex>^([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)(-SNAPSHOT)?$</regex>
+                        <replacement>$1.$2.$3.$4</replacement>
+                        <failIfNoMatch>true</failIfNoMatch>
+                      </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
